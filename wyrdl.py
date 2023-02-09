@@ -20,7 +20,7 @@ def main():
         refresh_page(headline=f"Guess {idx + 1}")
         show_guesses(guesses, word)
 
-        guesses[idx] = input(f"\nGuess {idx + 1}: ").upper()
+        guesses[idx] = guess_word(previous_guesses=guesses[:idx])
         if guesses[idx] == word:
             break
     
@@ -46,6 +46,15 @@ def get_random_word(word_list):
         console.print("No words of length 5 in the word list", style="warning")
         raise SystemExit()
 
+
+def guess_word(previous_guesses):
+    guess = console.input("\nGuess word: ").upper()
+    
+    if guess in previous_guesses:
+        console.print(f"You've already guessed {guess}.", style="warning")
+        return guess_word(previous_guesses)
+    
+    return guess
 
 def show_guesses(guesses, word):
     for guess in guesses:
