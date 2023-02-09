@@ -17,15 +17,15 @@ def main():
 
     # Process (main loop)
     for idx in range(6):
-        guesses[idx] = input(f"\nGuess {idx + 1}: ").upper()
+        refresh_page(headline=f"Guess {idx + 1}")
+        show_guesses(guesses, word)
 
-        show_guess(guesses[idx], word)
+        guesses[idx] = input(f"\nGuess {idx + 1}: ").upper()
         if guesses[idx] == word:
             break
     
     # Post-process
-    else:
-        game_over(word)
+    game_over(guesses, word, guessed_correctly=guesses[idx] == word)
         
 
 def get_random_word(word_list):
@@ -44,29 +44,31 @@ def get_random_word(word_list):
     return random.choice(words)
 
 
-def show_guess(guess, word):
-    """Show the user's guess on the terminal and classify all letters.
+def show_guesses(guesses, word):
+    for guess in guesses:
+        styled_guess = []
+        for letter, correct in zip(guess,word):
+            if letter == correct:
+                style = "bold white on green"
+            elif letter in word:
+                style = "bold white on yellow"
+            elif letter in ascii_letters:
+                style = "white on #666666"
+            else:
+                style = "dim"
+            styled_guess.append(f"[{style}]{letter}[/]")
+        
+        console.print("".join(styled_guess),justify="center")
+
+
+def game_over(guesses, word, guessed_correctly):
+    refresh_page(headline="Game Over")
+    show_guesses(guesses, word)
     
-    ## Example:
-    >>> show_guess("CRANE", "SNAKE")
-    Correct letters: A, E
-    Misplaced letters: N
-    Wrong letters: C, R
-    """
-
-    correct_letters = {
-        letter for letter, correct in zip(guess, word) if letter == correct
-    }
-    misplaced_letters = set(guess) & set(word) - correct_letters
-    wrong_letters = set(guess) - set(word)
-
-    print("Correct letters:", ", ".join(sorted(correct_letters)))
-    print("Misplaced letters:", ", ".join(sorted(misplaced_letters)))
-    print("Wrong letters:", ", ".join(sorted(wrong_letters)))
-
-
-def game_over(word):
-    print(f"The word was {word}")
+    if guessed_correctly:
+        console.print(f"\n[bold white on green]Correct, the word is {word}[/]")
+    else:
+        console.print(f"\n[bold white on red]The word was {word}[/]")
 
 
 def refresh_page(headline):
