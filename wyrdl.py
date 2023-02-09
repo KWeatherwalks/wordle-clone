@@ -31,3 +31,20 @@ for guess_num in range(1, 7):
 
 else:
     print(f"The was {word}")
+
+
+def main():
+    # Pre-process
+    word =  get_random_word(...)
+
+    # Process (main loop)
+    for guess_num in range(1, 7):
+        guess = input("f\Guess {guess_num}: ").upper()
+
+        show_guess(...)
+        if guess == word:
+            break
+    
+    # Post-process
+    else:
+        game_over(...)
