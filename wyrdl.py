@@ -13,13 +13,14 @@ def main():
     # Pre-process
     words_path = pathlib.Path(__file__).parent / "wordlist.txt"
     word =  get_random_word(words_path.read_text(encoding="utf-8").split("\n"))
+    guesses = ["_" * 5] * 6
 
     # Process (main loop)
-    for guess_num in range(1, 7):
-        guess = input(f"\nGuess {guess_num}: ").upper()
+    for idx in range(6):
+        guesses[idx] = input(f"\nGuess {idx + 1}: ").upper()
 
-        show_guess(guess, word)
-        if guess == word:
+        show_guess(guesses[idx], word)
+        if guesses[idx] == word:
             break
     
     # Post-process
