@@ -24,6 +24,13 @@ def main():
         
 
 def get_random_word(word_list):
+    """Get a random five-letter word from a list of strings.
+
+    ## Example:
+
+    >>> get_random_word(["snake", "worm", "it'll"])
+    'SNAKE'
+    """
     words = [
         word.upper()
         for word in word_list
