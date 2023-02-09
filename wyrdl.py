@@ -9,11 +9,15 @@ from rich.theme import Theme
 
 console = Console(width=40, theme=Theme({"warning": "red on yellow"}))
 
+NUM_LETTERS = 5
+NUM_GUESSES = 6
+WORDS_PATH = pathlib.Path(__file__).parent / "wordlist.txt"
+
+
 def main():
     # Pre-process
-    words_path = pathlib.Path(__file__).parent / "wordlist.txt"
-    word =  get_random_word(words_path.read_text(encoding="utf-8").split("\n"))
-    guesses = ["_" * 5] * 6
+    word =  get_random_word(WORDS_PATH.read_text(encoding="utf-8").split("\n"))
+    guesses = ["_" * NUM_LETTERS] * NUM_GUESSES
 
     # Process (main loop)
     for idx in range(6):
