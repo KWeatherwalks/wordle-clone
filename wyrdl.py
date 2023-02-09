@@ -57,6 +57,13 @@ def guess_word(previous_guesses):
     if len(guess) != 5:
         console.print("Your guess must be 5 letters.", style="warning")
         return guess_word(previous_guesses)
+
+    if any((invalid := letter) not in ascii_letters for letter in guess):
+        console.print(
+            f"Invalid letter: '{invalid}'. Please use English letters.",
+            style="warning",
+        )
+        return guess_word(previous_guesses)
     
     return guess
 
