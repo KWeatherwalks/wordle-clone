@@ -36,12 +36,15 @@ def get_random_word(word_list):
     >>> get_random_word(["snake", "worm", "it'll"])
     'SNAKE'
     """
-    words = [
+    if words := [
         word.upper()
         for word in word_list
         if len(word) == 5 and all(letter in ascii_letters for letter in word)
-    ]
-    return random.choice(words)
+    ]:
+        return random.choice(words)
+    else:
+        console.print("No words of length 5 in the word list", style="warning")
+        raise SystemExit()
 
 
 def show_guesses(guesses, word):
