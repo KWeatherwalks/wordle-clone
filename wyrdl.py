@@ -53,6 +53,10 @@ def guess_word(previous_guesses):
     if guess in previous_guesses:
         console.print(f"You've already guessed {guess}.", style="warning")
         return guess_word(previous_guesses)
+
+    if len(guess) != 5:
+        console.print("Your guess must be 5 letters.", style="warning")
+        return guess_word(previous_guesses)
     
     return guess
 
