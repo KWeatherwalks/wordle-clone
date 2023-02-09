@@ -1,8 +1,9 @@
 # wyrdl.py
 
+import contextlib
 import pathlib
 import random
-from string import ascii_letters
+from string import ascii_letters, ascii_uppercase
 
 from rich.console import Console
 from rich.theme import Theme
@@ -20,13 +21,14 @@ def main():
     guesses = ["_" * NUM_LETTERS] * NUM_GUESSES
 
     # Process (main loop)
-    for idx in range(6):
-        refresh_page(headline=f"Guess {idx + 1}")
-        show_guesses(guesses, word)
+    with contextlib.suppress(KeyboardInterrupt):
+        for idx in range(6):
+            refresh_page(headline=f"Guess {idx + 1}")
+            show_guesses(guesses, word)
 
-        guesses[idx] = guess_word(previous_guesses=guesses[:idx])
-        if guesses[idx] == word:
-            break
+            guesses[idx] = guess_word(previous_guesses=guesses[:idx])
+            if guesses[idx] == word:
+                break
     
     # Post-process
     game_over(guesses, word, guessed_correctly=guesses[idx] == word)
@@ -72,6 +74,7 @@ def guess_word(previous_guesses):
     return guess
 
 def show_guesses(guesses, word):
+    letter_status = {letter: letter for letter in ascii_uppercase}
     for guess in guesses:
         styled_guess = []
         for letter, correct in zip(guess,word):
@@ -84,8 +87,11 @@ def show_guesses(guesses, word):
             else:
                 style = "dim"
             styled_guess.append(f"[{style}]{letter}[/]")
+            if letter != "_":
+                letter_status[letter] = f"[{style}]{letter}[/]"
         
         console.print("".join(styled_guess),justify="center")
+    console.print("\n" + "".join(letter_status.values()), justify="center")
 
 
 def game_over(guesses, word, guessed_correctly):
